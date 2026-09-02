@@ -6,7 +6,6 @@ from PIL import Image
 import os
 import time
 
-# --- Setup ---
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print("Using device:", device)
 
@@ -18,9 +17,9 @@ model = model.to(device)
 model.eval()
 print("Model loaded.")
 
-# --- Load curated subset ---
+#load subset
 df = pd.read_csv("data/curated_subset.csv")
-print(f"Encoding {len(df)} images...")
+print(f"Encoding {len(df)} images..")
 
 image_dir = "data/images"
 embeddings = []
@@ -49,7 +48,7 @@ with torch.no_grad():
 
 print(f"Finished encoding {len(valid_ids)} images in {time.time() - start:.1f}s")
 
-# --- Save results ---
+# results - save
 embeddings = np.array(embeddings, dtype="float32")
 np.save("data/image_embeddings_vitl14.npy", embeddings)
 

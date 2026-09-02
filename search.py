@@ -14,15 +14,15 @@ tokenizer = open_clip.get_tokenizer("ViT-B-32")
 model = model.to(device)
 model.eval()
 
-# --- Load saved embeddings and metadata ---
+# load saved embeddings
 embeddings = np.load("data/image_embeddings.npy")
 ids_df = pd.read_csv("data/embedded_ids.csv")
 
 print("Loaded embeddings:", embeddings.shape)
 
-# --- Build FAISS index ---
+# FAISS index 
 dim = embeddings.shape[1]
-index = faiss.IndexFlatIP(dim)  # inner product = cosine similarity, since vectors are normalized
+index = faiss.IndexFlatIP(dim)
 index.add(embeddings)
 print("FAISS index built with", index.ntotal, "vectors")
 
@@ -39,7 +39,7 @@ def search(query_text, k=5):
     results["score"] = scores[0]
     return results[["id", "productDisplayName", "subCategory", "score"]]
 
-# --- Test queries ---
+
 test_queries = [
     "cozy oversized sweater",
     "sports shoes",

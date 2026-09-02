@@ -3,12 +3,12 @@ import os
 
 df = pd.read_csv("data/styles.csv", on_bad_lines="skip")
 
-# Categories chosen for meaningful semantic overlap / confusability
+#chosen for semantic overlap - easy to confuse
 target_categories = [
-    "Casual Shoes",   # vs Sports Shoes — visually similar, different use case
+    "Casual Shoes",   
     "Sports Shoes",
-    "Kurtas",         # ethnic wear stand-in
-    "Tshirts",        # western wear stand-in
+    "Kurtas",         
+    "Tshirts",        
     "Shirts",
     "Tops",
     "Handbags",
@@ -18,25 +18,23 @@ target_categories = [
 ]
 
 subset = df[df["articleType"].isin(target_categories)].copy()
-print("Rows matching target categories:", len(subset))
+print("rows matching target categories:", len(subset))
 
-# Cap per category so no single category dominates the subset
+# setting cap per category to prevent single category domination
 subset = subset.groupby("articleType", group_keys=False).apply(
     lambda x: x.sample(min(len(x), 600), random_state=42)
 )
-print("Rows after capping per category:", len(subset))
+print("rows after capping per category:", len(subset))
 
-# Confirm the actual image files exist for these rows
 image_dir = "data/images"
 subset["image_path"] = subset["id"].astype(str) + ".jpg"
 subset["exists"] = subset["image_path"].apply(lambda f: os.path.exists(os.path.join(image_dir, f)))
 
-print("Images found on disk:", subset["exists"].sum())
-print("Images missing:", (~subset["exists"]).sum())
+print("images found on disk:", subset["exists"].sum())
+print("images missing:", (~subset["exists"]).sum())
 
-# Keep only rows where the image actually exists
 final = subset[subset["exists"]].drop(columns=["exists"])
-print("Final curated subset size:", len(final))
+print("final curated subset size:", len(final))
 
 final.to_csv("data/curated_subset.csv", index=False)
-print("Saved to data/curated_subset.csv")
+print("saved to data/curated_subset.csv")

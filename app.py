@@ -7,15 +7,12 @@ import faiss
 import os
 import base64
 
-# ---------- Page config ----------
 st.set_page_config(page_title="Muse", layout="wide")
-
-# ---------- Custom CSS ----------
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap');
 
-/* Overall background — off-white parchment */
+
 .stApp {
     background-color: #F4EFE4;
 }
@@ -27,8 +24,6 @@ div[data-testid="stTextInput"] {
     margin: 1.5rem auto 2.5rem auto;
 }
 
-/* Search bar — white, bigger, icon baked in as a background image (avoids
-   nesting issues with separate floating elements) */
 .stApp input {
     background-color: #FFFFFF !important;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none'><circle cx='11' cy='11' r='7' stroke='%233A3939' stroke-width='2'/><line x1='16.5' y1='16.5' x2='21' y2='21' stroke='%233A3939' stroke-width='2' stroke-linecap='round'/></svg>") !important;
@@ -49,7 +44,6 @@ div[data-testid="stTextInput"] {
     box-shadow: 0 3px 16px rgba(0,0,0,0.13) !important;
 }
 
-/* Title — Muse, in Playfair Display, thinner, smaller */
 .app-title {
     text-align: center;
     color: #0A0A0A;
@@ -61,7 +55,7 @@ div[data-testid="stTextInput"] {
     letter-spacing: 0.5px;
 }
 
-/* Pinterest-style masonry grid using CSS columns */
+/* Pinterest inspired grid */
 .masonry {
     column-count: 4;
     column-gap: 16px;
@@ -83,8 +77,6 @@ div[data-testid="stTextInput"] {
     box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
-/* Image crop/zoom wrapper — crops excess white margin from source photos
-   and zooms in on the product so it fills more of the card */
 .masonry-item .img-crop {
     width: 100%;
     height: 260px;
@@ -116,14 +108,13 @@ div[data-testid="stTextInput"] {
 }
 </style>
 """, unsafe_allow_html=True)
-
-# ---------- Title ----------
+#title
 st.markdown('<div class="app-title">Muse</div>', unsafe_allow_html=True)
 
-# ---------- Search bar ----------
+#search bar
 query = st.text_input(" ", placeholder="Search", label_visibility="collapsed")
 
-# ---------- Load model + index (cached so it only loads once) ----------
+#loading model
 @st.cache_resource
 def load_model():
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -158,7 +149,7 @@ def search(query_text, k=16):
     results["score"] = scores[0]
     return results
 
-# ---------- Results grid ----------
+#results
 if query:
     results = search(query, k=16)
 
