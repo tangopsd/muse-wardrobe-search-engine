@@ -112,36 +112,52 @@ Beyond aggregate Precision@k scores, looking at actual search results reveals wh
 **Strong results**
 
 *Leather handbag, ViT-B/32:*
-<img src="assets/eval_leather_handbag_1.png" width="400"> <img src="assets/eval_leather_handbag_2.png" width="400">
+<img src="assets/eval_leather_handbag_1.png" width="400">
+
+<img src="assets/eval_leather_handbag_2.png" width="400">
 
 *Leather handbag, ViT-L/14:*
-<img src="assets/eval_leather_handbag_3.png" width="400"> <img src="assets/eval_leather_handbag_4.png" width="400">
+<img src="assets/eval_leather_handbag_3.png" width="400">
+
+<img src="assets/eval_leather_handbag_4.png" width="400">
 
 "Leather handbag" (Precision@5 = 1.00 on both models) returns exclusively correct matches, unsurprising given handbags are visually and semantically distinct from every other category in the curated dataset.
 
 *Ethnic kurta, ViT-B/32:*
-<img src="assets/eval_ethnic_kurta_1.png" width="400"> <img src="assets/eval_ethnic_kurta_2.png" width="400">
+<img src="assets/eval_ethnic_kurta_1.png" width="400">
+
+<img src="assets/eval_ethnic_kurta_2.png" width="400">
 
 *Ethnic kurta, ViT-L/14:*
-<img src="assets/eval_ethnic_kurta_3.png" width="400"> <img src="assets/eval_ethnic_kurta_4.png" width="400">
+<img src="assets/eval_ethnic_kurta_3.png" width="400">
+
+<img src="assets/eval_ethnic_kurta_4.png" width="400">
 
 "Ethnic kurta" (Precision@5 = 1.00 on ViT-B/32, 0.80 on ViT-L/14) performs well on both, correctly surfacing kurtas even without the word "kurta" appearing in most product names, evidence that the search is matching by visual/semantic concept rather than keyword.
 
 **Weak results**
 
 *Casual sneakers, ViT-B/32:*
-<img src="assets/eval_casual_sneakers_1.png" width="400"> <img src="assets/eval_casual_sneakers_2.png" width="400">
+<img src="assets/eval_casual_sneakers_1.png" width="400">
+
+<img src="assets/eval_casual_sneakers_2.png" width="400">
 
 *Casual sneakers, ViT-L/14:*
-<img src="assets/eval_casual_sneakers_3.png" width="400"> <img src="assets/eval_casual_sneakers_4.png" width="400">
+<img src="assets/eval_casual_sneakers_3.png" width="400">
+
+<img src="assets/eval_casual_sneakers_4.png" width="400">
 
 "Casual sneakers" (Precision@5 = 0.60 on ViT-B/32, 0.80 on ViT-L/14) shows visible confusion between Casual Shoes and Sports Shoes on both models. This is expected: both categories share a `subCategory` of "Shoes" and are visually similar (white sneaker silhouettes), which is exactly why this pair was deliberately included in the curated dataset as a confusable category test.
 
 *Summer sandals, ViT-B/32:*
-<img src="assets/eval_summer_sandals_1.png" width="400"> <img src="assets/eval_summer_sandals_2.png" width="400">
+<img src="assets/eval_summer_sandals_1.png" width="400">
+
+<img src="assets/eval_summer_sandals_2.png" width="400">
 
 *Summer sandals, ViT-L/14:*
-<img src="assets/eval_summer_sandals_3.png" width="400"> <img src="assets/eval_summer_sandals_4.png" width="400">
+<img src="assets/eval_summer_sandals_3.png" width="400">
+
+<img src="assets/eval_summer_sandals_4.png" width="400">
 
 "Summer sandals" (Precision@5 = 0.20 on ViT-B/32, 0.00 on ViT-L/14) is the weakest query in the entire evaluation, and the only one where the larger model fails completely. This failure appears driven less by category overlap and more by the word "summer" itself, likely pulling in seasonally-associated but categorically unrelated items (e.g., other warm-weather apparel) rather than footwear specifically.
 
