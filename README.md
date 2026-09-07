@@ -87,7 +87,7 @@ This opens the search interface in your browser at `http://localhost:8501`.
 
 To understand how model size affects retrieval quality, the full pipeline was run twice: once with CLIP's smaller ViT-B/32 image encoder, and once with the larger ViT-L/14. Both were evaluated on the same 11 test queries, using Precision@5 and Precision@10 as the quality metric, and average query time as the speed metric.
 
-![Precision@k comparison](assets/precision_comparison.png)
+<img src="assets/precision_comparison.png" width="500">
 
 | Metric | ViT-B/32 | ViT-L/14 |
 |---|---|---|
@@ -97,11 +97,11 @@ To understand how model size affects retrieval quality, the full pipeline was ru
 
 The larger model was consistently slower, roughly 3.2x the query latency of ViT-B/32, but it did not improve retrieval quality. On average, ViT-B/32 slightly outperformed ViT-L/14 on both Precision@5 and Precision@10.
 
-![Best and worst queries](assets/precision_best_worst.png)
+<img src="assets/precision_best_worst.png" width="500">
 
 Looking at individual queries tells a more nuanced story than the averages alone. Both models performed identically on the clearest queries (leather handbag, school backpack), where category boundaries are unambiguous. The gap shows up on harder, more visually confusable queries: "casual sneakers" improved slightly with ViT-L/14 at Precision@5, but dropped at Precision@10, while "summer sandals" (the weakest query for both models) failed completely under ViT-L/14, dropping from an already-poor 0.20 to 0.00.
 
-![All queries](assets/precision_all_queries.png)
+<img src="assets/precision_all_queries.png" width="600">
 
 **Takeaway:** on this dataset, a larger CLIP model did not translate to better retrieval quality, while costing over 3x the query latency. This suggests model size should be chosen based on dataset scale and complexity, not assumed to scale with quality, a genuinely useful engineering lesson for building retrieval systems in practice.
 
@@ -112,44 +112,36 @@ Beyond aggregate Precision@k scores, looking at actual search results reveals wh
 **Strong results**
 
 *Leather handbag, ViT-B/32:*
-![Leather handbag, ViT-B/32, part 1](assets/eval_leather_handbag_1.png)
-![Leather handbag, ViT-B/32, part 2](assets/eval_leather_handbag_2.png)
+<img src="assets/eval_leather_handbag_1.png" width="400"> <img src="assets/eval_leather_handbag_2.png" width="400">
 
 *Leather handbag, ViT-L/14:*
-![Leather handbag, ViT-L/14, part 1](assets/eval_leather_handbag_3.png)
-![Leather handbag, ViT-L/14, part 2](assets/eval_leather_handbag_4.png)
+<img src="assets/eval_leather_handbag_3.png" width="400"> <img src="assets/eval_leather_handbag_4.png" width="400">
 
 "Leather handbag" (Precision@5 = 1.00 on both models) returns exclusively correct matches, unsurprising given handbags are visually and semantically distinct from every other category in the curated dataset.
 
 *Ethnic kurta, ViT-B/32:*
-![Ethnic kurta, ViT-B/32, part 1](assets/eval_ethnic_kurta_1.png)
-![Ethnic kurta, ViT-B/32, part 2](assets/eval_ethnic_kurta_2.png)
+<img src="assets/eval_ethnic_kurta_1.png" width="400"> <img src="assets/eval_ethnic_kurta_2.png" width="400">
 
 *Ethnic kurta, ViT-L/14:*
-![Ethnic kurta, ViT-L/14, part 1](assets/eval_ethnic_kurta_3.png)
-![Ethnic kurta, ViT-L/14, part 2](assets/eval_ethnic_kurta_4.png)
+<img src="assets/eval_ethnic_kurta_3.png" width="400"> <img src="assets/eval_ethnic_kurta_4.png" width="400">
 
 "Ethnic kurta" (Precision@5 = 1.00 on ViT-B/32, 0.80 on ViT-L/14) performs well on both, correctly surfacing kurtas even without the word "kurta" appearing in most product names, evidence that the search is matching by visual/semantic concept rather than keyword.
 
 **Weak results**
 
 *Casual sneakers, ViT-B/32:*
-![Casual sneakers, ViT-B/32, part 1](assets/eval_casual_sneakers_1.png)
-![Casual sneakers, ViT-B/32, part 2](assets/eval_casual_sneakers_2.png)
+<img src="assets/eval_casual_sneakers_1.png" width="400"> <img src="assets/eval_casual_sneakers_2.png" width="400">
 
 *Casual sneakers, ViT-L/14:*
-![Casual sneakers, ViT-L/14, part 1](assets/eval_casual_sneakers_3.png)
-![Casual sneakers, ViT-L/14, part 2](assets/eval_casual_sneakers_4.png)
+<img src="assets/eval_casual_sneakers_3.png" width="400"> <img src="assets/eval_casual_sneakers_4.png" width="400">
 
 "Casual sneakers" (Precision@5 = 0.60 on ViT-B/32, 0.80 on ViT-L/14) shows visible confusion between Casual Shoes and Sports Shoes on both models. This is expected: both categories share a `subCategory` of "Shoes" and are visually similar (white sneaker silhouettes), which is exactly why this pair was deliberately included in the curated dataset as a confusable category test.
 
 *Summer sandals, ViT-B/32:*
-![Summer sandals, ViT-B/32, part 1](assets/eval_summer_sandals_1.png)
-![Summer sandals, ViT-B/32, part 2](assets/eval_summer_sandals_2.png)
+<img src="assets/eval_summer_sandals_1.png" width="400"> <img src="assets/eval_summer_sandals_2.png" width="400">
 
 *Summer sandals, ViT-L/14:*
-![Summer sandals, ViT-L/14, part 1](assets/eval_summer_sandals_3.png)
-![Summer sandals, ViT-L/14, part 2](assets/eval_summer_sandals_4.png)
+<img src="assets/eval_summer_sandals_3.png" width="400"> <img src="assets/eval_summer_sandals_4.png" width="400">
 
 "Summer sandals" (Precision@5 = 0.20 on ViT-B/32, 0.00 on ViT-L/14) is the weakest query in the entire evaluation, and the only one where the larger model fails completely. This failure appears driven less by category overlap and more by the word "summer" itself, likely pulling in seasonally-associated but categorically unrelated items (e.g., other warm-weather apparel) rather than footwear specifically.
 
@@ -161,7 +153,7 @@ Precision@k measures, out of the top k search results, how many are actually rel
 
 Precision@5 and Precision@10 were computed for 11 test queries, each mapped to an expected category, and averaged across all queries.
 
-![All queries](assets/precision_all_queries.png)
+<img src="assets/precision_all_queries.png" width="600">
 
 | | ViT-B/32 | ViT-L/14 |
 |---|---|---|
